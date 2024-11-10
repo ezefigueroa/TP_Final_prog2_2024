@@ -5,7 +5,10 @@ Nos falta implementar el algoritmo de dijkstra, comentar los métodos del árbol
 
 
 Yamila y Ezequiel van a comentar los métodos del árbol binario el día 8 de noviembre.
+
 Yamila agrega información sobre las ciudades el 9 de noviembre.
+
 Ezequiel Comienza con la implementación del algoritmo de dijkstra el 9 de noviembre.
+
 Yamila y Ezequiel terminarán la implementación del algoritmo de dijkstra el 10 de noviembre.
 
