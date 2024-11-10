@@ -19,6 +19,7 @@ def get_shortest_path(start_city, end_city):
 
     return path, distances[end_city]
 
+# Con la clase ArbolBinarioBusqueda, se representa un ABB y se especifican los métodos que se podrá realizar con ellos.
 class ArbolBinarioBusqueda:
 
     def __init__(self):
