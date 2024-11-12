@@ -34,7 +34,7 @@ class ArbolBinarioBusqueda:
         self.tamano = self.tamano + 1 #cada vez que se agrega un nuevo nodo al árbol se incrementa 1 para llevar el conteo de la cantidad de nodos que hay en el árbol.
 
     def _agregar(self,clave,valor,nodoActual): #este método es recursivo y permite insertar un nodo en el ABB buscando el lugar adecuado. Toma como parámetros la clave, valor y nodoActual en el que se encuentra el método durante la búsqueda.
-        if clave < nodoActual.clave #se compara la clave que se quiere agregar con la clave del nodoActual; si la clave a agregar es menor a la clave del nodoActual entra a la condición...
+        if clave < nodoActual.clave: #se compara la clave que se quiere agregar con la clave del nodoActual; si la clave a agregar es menor a la clave del nodoActual entra a la condición...
             if nodoActual.tieneHijoIzquierdo(): #si el nodo actual tiene un Hijo Izquierdo, entra a la condición...
                 self._agregar(clave,valor,nodoActual.hijoIzquierdo) #se llama al método de manera recursiva sobre el hijo izquierdo para encontrar donde insertar el nuevo nodo.
             else: #en caso contrario, si el nodo actual no tiene un hijo izquierdo....
@@ -132,7 +132,6 @@ class ArbolBinarioBusqueda:
             suc = nodoActual.encontrarSucesor() #Se busca el sucesor del nodo a eliminar, es decir, el nodo con la clave más pequeña en el subárbol derecho del nodo actual.
             nodoActual.clave = suc.clave #Después de obtener el sucesor, la clave del nodo actual es reemplazada por la clave del sucesor.
             nodoActual.cargaUtil = suc.cargaUtil #Similar a la clave, el valor del nodo actual se reemplaza con el valor del sucesor.
-
         else: # este nodo tiene un (1) hijo..
             if nodoActual.tieneHijoIzquierdo(): #Se verifica si el nodo tiene un hijo izquierdo.
                 if nodoActual.esHijoIzquierdo(): #Se comprueba si el nodo a eliminar es el hijo izquierdo de su padre.
@@ -144,8 +143,7 @@ class ArbolBinarioBusqueda:
                 else: #si el nodo no es ni hijo izquierdo ni hijo derecho...
                     nodoActual.reemplazarDatoDeNodo(nodoActual.hijoIzquierdo.clave, nodoActual.hijoIzquierdo.cargaUtil, nodoActual.hijoIzquierdo.hijoIzquierdo, nodoActual.hijoIzquierdo.hijoDerecho)
             else: # Si tiene hijo derecho
-                if nodoActual.esHijoIzquierdo(): #
-            if nodoActual.esHijoIzquierdo():  # Si el nodo actual es el hijo izquierdo del padre
+                if nodoActual.esHijoIzquierdo():  # Si el nodo actual es el hijo izquierdo del padre
                     nodoActual.hijoDerecho.padre = nodoActual.padre #se actualiza el padre del hijo derecho
                     nodoActual.padre.hijoIzquierdo = nodoActual.hijoDerecho # El padre apunta al hijo derecho
                 elif nodoActual.esHijoDerecho(): # Si el nodo actual es el hijo derecho del padre
@@ -182,95 +180,97 @@ class ArbolBinarioBusqueda:
             self._preorden(arbol.hijoIzquierdo) #Llama a _preorden para recorrer el subárbol izquierdo 
             self._preorden(arbol.hijoDerecho) # Llama a _preorden para recorrer el subárbol derecho
 
-class NodoArbol:
-    def __init__(self,clave,valor,izquierdo=None,derecho=None,padre=None):
-        self.clave = clave
-        self.cargaUtil = valor
-        self.hijoIzquierdo = izquierdo
-        self.hijoDerecho = derecho
-        self.padre = padre
+# Con la clase NodoArbol se crea un árbol binario
+class NodoArbol: 
+    def __init__(self,clave,valor,izquierdo=None,derecho=None,padre=None): #se define el constructor de la clase para inicializar un árbol con sus respectivos atributos.
+        self.clave = clave #atributo que va a almacenar la clave del nodo
+        self.cargaUtil = valor #atributo que va a almacenar el valor del nodo
+        self.hijoIzquierdo = izquierdo #hijo izquierdo del nodo
+        self.hijoDerecho = derecho #hijo derecho del nodo
+        self.padre = padre #nodo padre
         self.factorEquilibrio = 0
 
-    def tieneHijoIzquierdo(self):
-        return self.hijoIzquierdo
+    def tieneHijoIzquierdo(self): #método que verifica si el nodo tiene un hijo izquierdo, devolviendo True o False.
+        return self.hijoIzquierdo 
 
-    def tieneHijoDerecho(self):
+    def tieneHijoDerecho(self): #método que verifica si el nodo tiene un hijo derecho, devolviendo True o False.
         return self.hijoDerecho
 
-    def esHijoIzquierdo(self):
+    def esHijoIzquierdo(self): #método que verifica si el nodo es hijo izquierdo de su padre.
         return self.padre and self.padre.hijoIzquierdo == self
 
-    def esHijoDerecho(self):
+    def esHijoDerecho(self): #método que verifica si el nodo es hijo derecho de su padre.
         return self.padre and self.padre.hijoDerecho == self
 
-    def esRaiz(self):
+    def esRaiz(self): #método que verifica si el nodo es la raíz del árbol (no tiene padre)
         return not self.padre
 
-    def esHoja(self):
+    def esHoja(self): #método que verifica si el nodo es una hoja (si no tiene hijos ni izquierdo ni derecho)
         return not (self.hijoDerecho or self.hijoIzquierdo)
 
-    def tieneAlgunHijo(self):
+    def tieneAlgunHijo(self): #método que verifica si el nodo tiene un hijo izquierdo o un hijo derecho
         return self.hijoDerecho or self.hijoIzquierdo
 
-    def tieneAmbosHijos(self):
+    def tieneAmbosHijos(self): #método que verifica si el nodo tiene ambos hijos izquierdo y derecho
         return self.hijoDerecho and self.hijoIzquierdo
 
-    def reemplazarDatoDeNodo(self,clave,valor,hizq,hder):
-        self.clave = clave
-        self.cargaUtil = valor
-        self.hijoIzquierdo = hizq
-        self.hijoDerecho = hder
-        if self.tieneHijoIzquierdo():
+    def reemplazarDatoDeNodo(self,clave,valor,hizq,hder): #método que reemplaza los datos del nodo (clave, valor) y sus hijos izquierdo y derecho.
+        self.clave = clave # Reemplaza la clave del nodo.
+        self.cargaUtil = valor # Reemplaza el valor asociado a la clave.
+        self.hijoIzquierdo = hizq # Reemplaza el hijo izquierdo del nodo.
+        self.hijoDerecho = hder # Reemplaza el hijo derecho del nodo.
+        if self.tieneHijoIzquierdo(): #si el nodo tiene hijo izquierdo, actualiza el padre de ese hijo.
             self.hijoIzquierdo.padre = self
-        if self.tieneHijoDerecho():
+        if self.tieneHijoDerecho(): #si el nodo tiene hijo derecho, actualiza el padre de ese hijo.
             self.hijoDerecho.padre = self
 
-    def encontrarSucesor(self):
+    def encontrarSucesor(self): #método que busca el sucesor inorden del nodo (es decir, el nodo con la siguiente clave mayor).
         suc = None
-        if self.tieneHijoDerecho():
+        if self.tieneHijoDerecho(): # Si el nodo tiene hijo derecho, el sucesor es el nodo con el valor mínimo en el subárbol derecho.
             suc = self.hijoDerecho.encontrarMin()
-        else:
+        else: # Si no tiene hijo derecho, sube por el árbol buscando el primer ancestro que sea hijo izquierdo de su padre.
             if self.padre:
                 if self.esHijoIzquierdo():
-                    suc = self.padre
-                else:
+                    suc = self. # El sucesor es el padre si este nodo es hijo izquierdo.
+                else: # Si el nodo es hijo derecho, sube al padre y busca su sucesor.
                     self.padre.hijoDerecho = None
                     suc = self.padre.encontrarSucesor()
                     self.padre.hijoDerecho = self
         return suc
 
     def empalmar(self):
-        if self.esHoja():
+        # Elimina el nodo del árbol, "empalmando" sus hijos con su padre.
+        if self.esHoja(): # Si el nodo es una hoja, simplemente elimina la referencia de su padre a él.
             if self.esHijoIzquierdo():
                 self.padre.hijoIzquierdo = None
             else:
                 self.padre.hijoDerecho = None
-        elif self.tieneAlgunHijo():
+        elif self.tieneAlgunHijo(): # Si el nodo tiene un hijo (izquierdo o derecho), reemplaza el nodo con su único hijo.
             if self.tieneHijoIzquierdo():
                 if self.esHijoIzquierdo():
-                    self.padre.hijoIzquierdo = self.hijoIzquierdo
+                    self.padre.hijoIzquierdo = self.hijoIzquierdo # Si es hijo izquierdo, el padre apunta al hijo izquierdo.
                 else:
-                    self.padre.hijoDerecho = self.hijoIzquierdo
-                self.hijoIzquierdo.padre = self.padre
+                    self.padre.hijoDerecho = self.hijoIzquierdo # Si es hijo derecho, el padre apunta al hijo izquierdo.
+                self.hijoIzquierdo.padre = self.padre # Actualiza el padre del hijo izquierdo.
             else:
-                if self.esHijoIzquierdo():
-                    self.padre.hijoIzquierdo = self.hijoDerecho
+                if self.esHijoIzquierdo(): 
+                    self.padre.hijoIzquierdo = self.hijoDerecho # Si es hijo izquierdo, el padre apunta al hijo derecho.
                 else:
-                    self.padre.hijoDerecho = self.hijoDerecho
-                self.hijoDerecho.padre = self.padre
+                    self.padre.hijoDerecho = self.hijoDerecho # Si es hijo derecho, el padre apunta al hijo derecho.
+                self.hijoDerecho.padre = self.padre # Actualiza el padre del hijo derecho.
 
-    def encontrarMin(self):
+    def encontrarMin(self): #método que # Encuentra el nodo con la clave mínima en el subárbol (el más a la izquierda).
         actual = self
         while actual.tieneHijoIzquierdo():
-            actual = actual.hijoIzquierdo
+            actual = actual.hijoIzquierdo # Baja al hijo izquierdo hasta llegar al nodo más a la izquierda.
         return actual
 
-    def __iter__(self):
+    def __iter__(self): # Permite la iteración sobre el árbol inorden (izquierda, raíz, derecha).
         if self:
-            if self.tieneHijoIzquierdo():
+            if self.tieneHijoIzquierdo(): # Si tiene hijo izquierdo, itera sobre él.
                 for elem in self.hijoIzquierdo:
                     yield elem
-            yield self.clave
+            yield self.clave # Luego devuelve la clave del nodo actual.
             if self.tieneHijoDerecho():
-                for elem in self.hijoDerecho:
+                for elem in self.hijoDerecho: # Si tiene hijo derecho, itera sobre él.
                     yield elem
