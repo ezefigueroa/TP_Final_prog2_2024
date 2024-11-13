@@ -9,81 +9,51 @@ from .models import City, Route
    # return distances, previous_cities
 
 def dijkstra(start_city):
-    # Inicializamos las distancias y los caminos previos
-    distances = {start_city: 0}
-    previous_cities = {start_city: None}
+    ciudades = City.objects.all()
+    distances = {ciudad: float('inf') for ciudad in ciudades}
+    distances[start_city] = 0
+    previous_cities = {ciudad: None for ciudad in ciudades}
     
-    # Obtenemos todas las ciudades no visitadas
-    unvisited = set(City.objects.all())
+    visitar = []
+    heapq.heappush(visitar, (0, start_city))
 
-    # Inicializamos las distancias a infinito para cada ciudad
-    for city in unvisited:
-        if city != start_city:
-            distances[city] = float('inf')
-            previous_cities[city] = None
-    
-    while unvisited:
-        # Seleccionamos la ciudad no visitada con la distancia mínima
-        current_city = min((city for city in unvisited), key=lambda city: distances[city])
+    while visitar != []:
+        distancia_actual, ciudad_actual = heapq.heappop(visitar)
 
-        # Si la distancia mínima es infinita, significa que no hay camino
-        if distances[current_city] == float('inf'):
-            break
+        if distancia_actual > distances[ciudad_actual]:
+            continue
 
-        # Obtener las rutas desde la ciudad actual
-        routes = Route.objects.filter(start_city=current_city)
+        rutas = Route.objects.filter(start_city=ciudad_actual)
 
-        # Recorrer los vecinos del vértice actual (rutas desde current_city)
-        for route in routes:
-            neighbor = route.end_city
-            new_distance = distances[current_city] + route.distance
-            
-            # Si encontramos una distancia menor, actualizamos
-            if new_distance < distances[neighbor]:
-                distances[neighbor] = new_distance
-                previous_cities[neighbor] = current_city
+        for ruta in rutas:
+            vecino = ruta.end_city
+            nueva_distancia = distancia_actual + ruta.distance
 
-        # Marcar la ciudad actual como visitada
-        unvisited.remove(current_city)
+            if nueva_distancia < distances[vecino]:
+                distances[vecino] = nueva_distancia
+                previous_cities[vecino] = ciudad_actual
+                heapq.heappush(visitar, (nueva_distancia, vecino))
 
     return distances, previous_cities
 
-# Función para obtener el camino más corto
+
+
+
+
+
+
+
 def get_shortest_path(start_city, end_city):
     distances, previous_cities = dijkstra(start_city)
     path = []
     city = end_city
 
-    # Reconstruir el camino desde el `end_city` hacia el `start_city`
     while previous_cities[city]:
         path.insert(0, city)
         city = previous_cities[city]
-    path.insert(0, city)  # Agregar la ciudad de inicio
-
-    # Si no se pudo llegar al `end_city`, devuelve un camino vacío
-    if distances[end_city] == float('inf'):
-        return [], float('inf')
+    path.insert(0, city)
 
     return path, distances[end_city]
-
-
-
-
-
-
-
-
-#def get_shortest_path(start_city, end_city):
- #   distances, previous_cities = dijkstra(start_city)
-  #  path = []
-   # city = end_city
-
-    #while previous_cities[city]:
-     #   path.insert(0, city)
-      #  city = previous_cities[city]
-    #path.insert(0, city)
-
-    #return path, distances[end_city]
 
 class ArbolBinarioBusqueda:
 
