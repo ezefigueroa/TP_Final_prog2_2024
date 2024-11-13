@@ -2,9 +2,12 @@ from django.db import models
 
 class City(models.Model):
     name = models.CharField(max_length=100)
-    descripcion = models.CharField(max_length=100, default="Sin descripción")
+    descubre_el_lugar = models.TextField(default='Sin descripción')
     imagen = models.ImageField(upload_to='cities/', blank=True, null=True)
+    atractivos= models.TextField(default='Sin descripción')
     
+
+
 
     def __str__(self):
         return self.name
