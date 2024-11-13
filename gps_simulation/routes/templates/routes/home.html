@@ -3,13 +3,29 @@
 {% block title %}Lista de Ciudades{% endblock %}
 
 {% block content %}
-    <h1>Ciudades</h1>
-    
-    <ul class="list-group">
-        {% for ciudad in ciudades %}
-            <li class="list-group-item"><a href="/city/{{ciudad.id}}">{{ ciudad.name }}</a> </li>
-        {% empty %}
-            <li class="list-group-item">No hay ciudades disponibles.</li>
-        {% endfor %}
-    </ul>
+    <div class="container mt-5">
+        <h1 class="text-center mb-4">Explora las Ciudades</h1>
+
+        <!-- Tarjeta para la lista de ciudades -->
+        <div class="card">
+            <div class="card-body">
+                <h3 class="card-title mb-4">Ciudades Disponibles</h3>
+                
+                {% if ciudades %}
+                    <ul class="list-group list-group-flush">
+                        {% for ciudad in ciudades %}
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                <a href="/city/{{ ciudad.id }}" class="text-decoration-none text-dark">
+                                    <h5>{{ ciudad.name }}</h5>
+                                </a>
+                                <span class="badge bg-primary rounded-pill">Ver más</span>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <p class="text-center mt-4">No hay ciudades disponibles.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
 {% endblock %}
