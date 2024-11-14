@@ -231,7 +231,7 @@ class NodoArbol:
         else: # Si no tiene hijo derecho, sube por el árbol buscando el primer ancestro que sea hijo izquierdo de su padre.
             if self.padre:
                 if self.esHijoIzquierdo():
-                    suc = self. # El sucesor es el padre si este nodo es hijo izquierdo.
+                    suc = self.padre.encontrarSucesor() # El sucesor es el padre si este nodo es hijo izquierdo.
                 else: # Si el nodo es hijo derecho, sube al padre y busca su sucesor.
                     self.padre.hijoDerecho = None
                     suc = self.padre.encontrarSucesor()
